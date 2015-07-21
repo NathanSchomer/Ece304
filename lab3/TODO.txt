@@ -1,0 +1,14 @@
+1. String compare (case 1)
+	-always prints "-113" for the input "Nathan" immediately after boot
+	-comparing extra characters??
+	-str1 & str2 initializing to different values?
+
+2. Longest Word & Most vowels (case 4)
+	-Works immediately after boot due to accumulation of characters in str1
+
+3. Luhn Checksum Validation (case 7)
+	-get integer from terminal and test
+
+4. Palindrome
+	-always returns 1 regardless of input
+	-compare to linux code
