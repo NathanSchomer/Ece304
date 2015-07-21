@@ -200,12 +200,14 @@ int exponent(int base, int exp){
 int validateLuhnStr(char *num)
 {
 	int sum = 0, i;
-	for(i = 0; *num != '\0'; i++)
+	for(i = 0; *(num + i + 1) != '\0'; i+=2)
 	{
-		sum += 2*(*(num + i) - '0')%10 + 2*(*(num + i) - '0')/10 
-		sum += *(num + ++i) - '0';
+		sum += *(num + i) - '0';
+        sum += (2*(*(num + i + 1) - '0'))%10 + (2*(*(num + i + 1) - '0'))/10;
 	}
-	if(sum % 10 == 0) return 1; //VALID
+	//if((sum + *((num + i + 1)-'0')) % 10 == 0) return 1; //VALID
+    sum += *(num + i) - '0'; 
+    if(sum % 10 == 0) return 1;
 	else return 0;
 }
 
@@ -223,15 +225,19 @@ int validateLuhn(int num)
 }
 
 int checkPalindrome(char *word){
-	int length = strlen(word);
+	//int length = size(word);
 	int i;
-
-    
-	for(i = 0; i < size(word); i++){
-		if(*(word + i) != *(word+length-i-1))
-			return 0;	//palindrome
+    int front = 0, back = 0;
+	for(i = 0; i < (size(word)/2); i++){
+        if(*(word + front) == ' ') front++;
+        if(*(word+size(word)-back-1) == ' ') back++;
+        
+		if(*(word + front) != *(word+size(word)-back-1))
+			return 0;	//not palindrome
+        front++;
+        back++;
 	}
-	return 1; //not palindrome
+	return 1; //palindrome
 }
 
 int main(){
@@ -287,7 +293,7 @@ int main(){
                 break;
                 
 		case 3: //substring check
-					UART_1_UartPutString("\n\rCheck for Substring\n\rStr1: ");
+					UART_1_UartPutString("\n\r Check for Substring\n\r Str1: ");
                     ReadString(str1);
                     UART_1_UartPutString("\n \r SubStr: ");
                     ReadString(str2);
@@ -295,41 +301,41 @@ int main(){
                     //str2 = "Te";
 
 					status = searchSubString(str1, str2);
-					UART_1_UartPutString("\n\rFound at: ");
+					UART_1_UartPutString("\n\r Found at: ");
                     WriteInt(status);
                 break;
 		
 		case 4: //count, longest word, most vowels
-			UART_1_UartPutString("\n\rCount, longest, most vowels:\n\rStr1:"); 
+			UART_1_UartPutString("\n\r Count, longest, most vowels:\n\r Str1: "); 
             ReadString(str1);
 
 			//valid for the same string???
-			//add string output infront of return values
+			//add string outp1ut infront of return values
 			status = countWords(str1);
-			UART_1_UartPutString("\n\rWord Count: ");
+			UART_1_UartPutString("\n\r Word Count: ");
 			WriteInt(status);
 			
             status2 = longestWord(str1);
-            UART_1_UartPutString("\n\rLongest Word: ");
+            UART_1_UartPutString("\n\r Longest Word: ");
 			WriteInt(status2);
 			
             status3 = mostVowels(str1);
-            UART_1_UartPutString("\n\rMost vowels: ");
+            UART_1_UartPutString("\n\r Most vowels: ");
 			WriteInt(status3);
 		break;
             
-		case 5: //luhn checksum validation
+		case 5: //luhn checksum validation 43589795
 			
 		//READ INT FROM TERMINAL
-			status = validateLuhn(input_num);
+            UART_1_UartPutString("\n\r Validate Luhn Checksum: \n\r Num: ");
+            ReadString(str1);
+			status = validateLuhnStr(str1);
 			WriteInt(status);
 		break;
 
 		case 6: //palindrome
 			UART_1_UartPutString("\n \r Check Palindrome: \n \r Str1: ");
 			ReadString(str1);
-            
-            UART_1_UartPutString(str1);
 
 			status = checkPalindrome(str1);			
 			WriteInt(status);
@@ -342,8 +348,8 @@ int main(){
 			WriteInt(status);
 		break;
 
-                default:
-                UART_1_UartPutString("\n \r Erroneous entry. Try again. \n \r");
+        default:
+        UART_1_UartPutString("\n \r Erroneous entry. Try again. \n \r");
             };
         }
     }
