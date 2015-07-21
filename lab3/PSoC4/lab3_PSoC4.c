@@ -14,14 +14,13 @@
 #include <stdlib.h>
 #define MAX_BUFFER_SIZE 64
 
-int size(char *str1)
+int size(char *str)
 {
 	int count = 0;
 	while(*str != '\0')
 	{
-		if(*str == ch)
-			return count;
-		count++; str++;
+		count++;
+        str++;
 	}
 	return -1;
 }
@@ -159,8 +158,9 @@ int longestWord(char *str){
 			}
 			currWordBegin = i + 1;
 		}
-		return max;
-	}	
+	}
+    return max;
+}
 
 int mostVowels(char *str){
 	int max = 0, curr = 0;
@@ -181,7 +181,7 @@ int mostVowels(char *str){
 			   *str == 'o' || *str == 'O' ||
 			   *str == 'u' || *str == 'U' )
 			{ 
-				curr++ 
+				curr++; 
 			}
 		}
 		str++;
@@ -189,24 +189,24 @@ int mostVowels(char *str){
 	return max;
 }
 
+int exponent(int base, int exp){
+	int i, result = base;
+	for(i = 0; i < exp - 1; i++)
+		result *= base;
+	return result;
+}
+
 int validateLuhn(int num)
 {
 	int sum = 0, i;
 	for(i = 1; num > 0; i += 2){
-		sum += num%power(10,i);
-		sum += 2*(num%power(10,i+1))%10 + 2*(num%power(10, i+1))/10;
+		sum += num%exponent(10,i);
+		sum += 2*(num%exponent(10,i+1))%10 + 2*(num%exponent(10, i+1))/10;
 		if(num < 100) break;
 		else num /= 100;
 	}
 	if(sum % 10 == 0) return 1; //VALID
 	else return 0;				//INVALID
-}
-
-int power(int base, int exp){
-	int i, result = base;
-	for(i = 0; i < exp - 1; i++)
-		result *= base;
-	return result;
 }
 
 int checkPalindrome(char *word){
@@ -219,8 +219,6 @@ int checkPalindrome(char *word){
 	}
 	return 1; //not palindrome
 }
-
-
 
 int main(){
     ///// PART A
@@ -299,7 +297,7 @@ int main(){
 			
 		//READ INT FROM TERMINAL
 		
-			status = validateLuhn(input_num));
+			status = validateLuhn(input_num);
 			WriteInt(status);
 		break;
 
@@ -323,4 +321,3 @@ int main(){
     {
     }
 }
-
