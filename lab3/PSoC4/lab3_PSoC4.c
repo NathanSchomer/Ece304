@@ -21,7 +21,7 @@ int size(char *str)
 	{
 		count++;
 	}
-	return count - 2;
+	return count;
 }
 
 void ReadString(char *buffer)
@@ -83,8 +83,8 @@ int compareStrings(char *str1, char *str2)
     {
         if(*str1 != *str2)
         {
-            if((*str1 - *str2) < -100) return 0;
-            else return (*str1 - *str2);
+            //if((*str1 - *str2) < -100) return 0;
+            return (*str1 - *str2);
             
         }
         str1++; str2++;
@@ -197,6 +197,18 @@ int exponent(int base, int exp){
 	return result;
 }
 
+int validateLuhnStr(char *num)
+{
+	int sum = 0, i;
+	for(i = 0; *num != '\0'; i++)
+	{
+		sum += 2*(*(num + i) - '0')%10 + 2*(*(num + i) - '0')/10 
+		sum += *(num + ++i) - '0';
+	}
+	if(sum % 10 == 0) return 1; //VALID
+	else return 0;
+}
+
 int validateLuhn(int num)
 {
 	int sum = 0, i;
@@ -205,7 +217,7 @@ int validateLuhn(int num)
 		sum += 2*(num%exponent(10,i+1))%10 + 2*(num%exponent(10, i+1))/10;
 		if(num < 100) break;
 		else num /= 100;
-	}
+		}
 	if(sum % 10 == 0) return 1; //VALID
 	else return 0;				//INVALID
 }
@@ -215,7 +227,7 @@ int checkPalindrome(char *word){
 	int i;
 
     
-	for(i = 1; i < 3; i++){
+	for(i = 0; i < size(word); i++){
 		if(*(word + i) != *(word+length-i-1))
 			return 0;	//palindrome
 	}
@@ -237,7 +249,7 @@ int main(){
         //UART_1_UartPutString("\n \r Function to excecute (1 for string) \ compare, 2 for character serach, 3 for substring \ search, or -1 to exit): ");
         tmpChar = UART_1_UartGetChar(); //&choice??
         //choice = tmpChar - '0';
-        
+		
         if(choice == -1) break;
         
         if(tmpChar)
@@ -245,7 +257,7 @@ int main(){
             choice = tmpChar - '0';
             switch(choice){
                 case 1: //compare strings
-					UART_1_UartPutString("\n \r Str1: "); 
+					UART_1_UartPutString("\n \r Compare Strings: \n \r Str1: "); 
 					ReadString(str1);
                     
 					UART_1_UartPutString("\n \r Str2: ");
@@ -306,26 +318,27 @@ int main(){
 			WriteInt(status3);
 		break;
             
-        case 5:
-            ReadString(str1);
-            status = strlen(str1);
-            WriteInt(status);
-        break;
-
-		case 7: //luhn checksum validation
+		case 5: //luhn checksum validation
 			
 		//READ INT FROM TERMINAL
 			status = validateLuhn(input_num);
 			WriteInt(status);
 		break;
 
-		case 8: //palindrome
-			UART_1_UartPutString("\n \r Str1: ");
+		case 6: //palindrome
+			UART_1_UartPutString("\n \r Check Palindrome: \n \r Str1: ");
 			ReadString(str1);
             
             UART_1_UartPutString(str1);
 
 			status = checkPalindrome(str1);			
+			WriteInt(status);
+		break;
+
+		case 7:
+			UART_1_UartPutString("\n \r chars in string: \n \r Str1: ");
+			ReadString(str1);
+			status = size(str1);
 			WriteInt(status);
 		break;
 
