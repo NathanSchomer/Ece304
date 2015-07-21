@@ -17,12 +17,11 @@
 int size(char *str)
 {
 	int count = 0;
-	while(*str != '\0')
+	while(*(str + count) != '\0')
 	{
 		count++;
-        str++;
 	}
-	return -1;
+	return count - 2;
 }
 
 void ReadString(char *buffer)
@@ -40,7 +39,7 @@ void ReadString(char *buffer)
             UART_1_UartPutChar(rxData);//echo char back to terminal
             if(rxData == '\r')
             {
-                *ptr = '\r';
+                *ptr = '\0';
                 break;
             }
             /* Store the character into the current buffer location and incriment the pointer to the next location */
@@ -78,18 +77,20 @@ int countBits(int v)
     return count;
 }
 
-//good
 int compareStrings(char *str1, char *str2)
 {
     while(*str1 != '\0')
     {
         if(*str1 != *str2)
-            return *str1 - *str2;
+        {
+            if((*str1 - *str2) < -100) return 0;
+            else return (*str1 - *str2);
+            
+        }
         str1++; str2++;
     }
     return 0;
 }
-
 
 int searchForChar(char *str1, uint32 ch)
 {
@@ -210,11 +211,12 @@ int validateLuhn(int num)
 }
 
 int checkPalindrome(char *word){
-	int length = size(word);
+	int length = strlen(word);
 	int i;
 
-	for(i = 0; i < (size(word)/2); i++){
-		if(*(word+i) != *(word+length-i-1))
+    
+	for(i = 1; i < 3; i++){
+		if(*(word + i) != *(word+length-i-1))
 			return 0;	//palindrome
 	}
 	return 1; //not palindrome
@@ -303,11 +305,16 @@ int main(){
             UART_1_UartPutString("\n\rMost vowels: ");
 			WriteInt(status3);
 		break;
+            
+        case 5:
+            ReadString(str1);
+            status = strlen(str1);
+            WriteInt(status);
+        break;
 
 		case 7: //luhn checksum validation
 			
 		//READ INT FROM TERMINAL
-		
 			status = validateLuhn(input_num);
 			WriteInt(status);
 		break;
@@ -315,6 +322,8 @@ int main(){
 		case 8: //palindrome
 			UART_1_UartPutString("\n \r Str1: ");
 			ReadString(str1);
+            
+            UART_1_UartPutString(str1);
 
 			status = checkPalindrome(str1);			
 			WriteInt(status);
