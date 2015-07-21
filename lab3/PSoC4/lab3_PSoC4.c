@@ -81,7 +81,7 @@ int countBits(int v)
 //good
 int compareStrings(char *str1, char *str2)
 {
-    while(*str1 != '\0' && *str2 != '\0')
+    while(*str1 != '\0')
     {
         if(*str1 != *str2)
             return *str1 - *str2;
@@ -146,13 +146,13 @@ int longestWord(char *str){
 	int currWordBegin = 0;
 	int i;
 
-	for(i = 0;; i++)
+	for(i = 0; 1 == 1; i++)
 	{
 		if(*(str+i) == ' ' || *(str+i) == '\0'){
 			if((i - currWordBegin) > max ){
 				max = i - currWordBegin;
 				maxWordBegin = currWordBegin;
-				maxWordEnd = --i;				//make sure this behaves as expected
+				maxWordEnd = i - 1;				//make sure this behaves as expected
 				if(*(str+i) == '\0')
 					break;
 			}
@@ -254,7 +254,7 @@ int main(){
                 break;
                 
                 case 2: //check for char
-                    UART_1_UartPutString("\n\rCheck for Char\n\rStr1: ");
+                    UART_1_UartPutString("\n \r Check for Char \n \r Str1: ");
                     ReadString(str1);
 
                     UART_1_UartPutString("\n \r Char: ");
@@ -268,7 +268,7 @@ int main(){
 					UART_1_UartPutChar(ch);
                     
 					status = searchForChar(str1, ch);
-					UART_1_UartPutString("Location of char: ");
+					UART_1_UartPutString("\n \r Location of char: ");
                     WriteInt(status);
                 break;
                 
@@ -286,23 +286,21 @@ int main(){
                 break;
 		
 		case 4: //count, longest word, most vowels
-			UART_1_UartPutString("\n\rCount, longest, most vowels:\n\rStr1:"); ReadString(str1);
-			ReadString(str1);
-
-			UART_1_UartPutString("\n \r Str2:"); ReadString(str2);
-			ReadString(str2);
+			UART_1_UartPutString("\n\rCount, longest, most vowels:\n\rStr1:"); 
+            ReadString(str1);
 
 			//valid for the same string???
 			//add string output infront of return values
 			status = countWords(str1);
-		   	status2 = longestWord(str1);
-			status3 = mostVowels(str1);	
-			
 			UART_1_UartPutString("\n\rWord Count: ");
 			WriteInt(status);
-			UART_1_UartPutString("\n\rLongest Word: ");
+			
+            status2 = longestWord(str1);
+            UART_1_UartPutString("\n\rLongest Word: ");
 			WriteInt(status2);
-			UART_1_UartPutString("\n\rMost vowels: ");
+			
+            status3 = mostVowels(str1);
+            UART_1_UartPutString("\n\rMost vowels: ");
 			WriteInt(status3);
 		break;
 
