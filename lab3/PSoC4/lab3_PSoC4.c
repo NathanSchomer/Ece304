@@ -243,14 +243,14 @@ int main(){
             choice = tmpChar - '0';
             switch(choice){
                 case 1: //compare strings
-					UART_1_UartPutString("\n\rString Comparison\n\rStr1: "); 
+					UART_1_UartPutString("\n \r Str1: "); 
 					ReadString(str1);
                     
 					UART_1_UartPutString("\n \r Str2: ");
                     ReadString(str2);
 					
 					status = compareStrings(str1, str2);
-					UART_1_UartPutString("Are equal? (0 = yes): "); WriteInt(status);
+					WriteInt(status);
                 break;
                 
                 case 2: //check for char
