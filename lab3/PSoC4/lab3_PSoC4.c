@@ -281,7 +281,7 @@ int main(){
                     //str2 = "Te";
 
 					status = searchSubString(str1, str2);
-					UART1_UartPutString("\n\rFound at: ");
+					UART_1_UartPutString("\n\rFound at: ");
                     WriteInt(status);
                 break;
 		
