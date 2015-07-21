@@ -111,7 +111,7 @@ int searchSubString(char *str1, char *subStr)
 	int i;
 
 	//loop through all of str1
-	while(*str1 != 10){
+	while(*str1 != '\0'){
 		if(*str1 == *subStr){
 			for(i = 1; i < subsize; i++){
 				if(*(str1 + i) != *(subStr + i))
@@ -243,41 +243,50 @@ int main(){
             choice = tmpChar - '0';
             switch(choice){
                 case 1: //compare strings
-                    UART_1_UartPutString("\n \r Str1: ");
-                    ReadString(str1);
-                    UART_1_UartPutString("\n \r Str2: ");
+					UART_1_UartPutString("\n\rString Comparison\n\rStr1: "); 
+					ReadString(str1);
+                    
+					UART_1_UartPutString("\n \r Str2: ");
                     ReadString(str2);
-                    status = compareStrings(str1, str2);
-                    WriteInt(status);
+					
+					status = compareStrings(str1, str2);
+					UART_1_UartPutString("Are equal? (0 = yes): "); WriteInt(status);
                 break;
                 
                 case 2: //check for char
-                    UART_1_UartPutString("\n \r Str1: ");
+                    UART_1_UartPutString("\n\rCheck for Char\n\rStr1: ");
                     ReadString(str1);
+
                     UART_1_UartPutString("\n \r Char: ");
-                    
                     ch = UART_1_UartGetChar();
-                    do{
+                    
+					do{
                         ch = UART_1_UartGetChar();
                     }while(!ch);
                     
-                    status = searchForChar(str1, ch);
+					//print the accepted character back to the terminal
+					UART_1_UartPutChar(ch);
+                    
+					status = searchForChar(str1, ch);
+					UART_1_UartPutString("Location of char: ");
                     WriteInt(status);
                 break;
                 
 		case 3: //substring check
-                    UART_1_UartPutString("\n \r Str1: ");
+					UART_1_UartPutString("\n\rCheck for Substring\n\rStr1: ");
                     ReadString(str1);
                     UART_1_UartPutString("\n \r SubStr: ");
                     ReadString(str2);
                     //str1 = "Test";
                     //str2 = "Te";
-                    status = searchSubString(str1, str2);
+
+					status = searchSubString(str1, str2);
+					UART1_UartPutString("\n\rFound at: ");
                     WriteInt(status);
                 break;
 		
 		case 4: //count, longest word, most vowels
-			UART_1_UartPutString("\n \r Str1:"); ReadString(str1);
+			UART_1_UartPutString("\n\rCount, longest, most vowels:\n\rStr1:"); ReadString(str1);
 			ReadString(str1);
 
 			UART_1_UartPutString("\n \r Str2:"); ReadString(str2);
@@ -288,8 +297,12 @@ int main(){
 			status = countWords(str1);
 		   	status2 = longestWord(str1);
 			status3 = mostVowels(str1);	
+			
+			UART_1_UartPutString("\n\rWord Count: ");
 			WriteInt(status);
+			UART_1_UartPutString("\n\rLongest Word: ");
 			WriteInt(status2);
+			UART_1_UartPutString("\n\rMost vowels: ");
 			WriteInt(status3);
 		break;
 
