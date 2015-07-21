@@ -12,3 +12,9 @@
 4. Palindrome
 	-always returns 1 regardless of input
 	-compare to linux code
+	-...issue caused by size() function!
+
+5. Size
+	-always returns -1
+	-ASK TA about issue
+	-returns the same value regardless of string
