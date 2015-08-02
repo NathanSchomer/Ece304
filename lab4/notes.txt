@@ -1,0 +1,75 @@
+In top Design:
+	-associate interrupt with switch
+
+ISRs will be written in main.c file:
+
+CY_ISR(my_switch_isr)
+{
+	// "filters" out any bounding that may occur while switch is settling
+	CyDelay(50);
+	while(!SW_Read());
+	CyDelay(50);
+
+	//Toggle LED
+	RED_LED_Write(!(RED_LED_Read());
+	SW_ClearInterrupt();
+}
+
+main(){
+	CyGlobalIntDisable;
+	SW_Int_Start();
+	SW_Int_SetVector(my_switch_isr); //override address of ISR stub in vector table
+	CyGLobalIntEnable;
+
+	for(;;){}
+}
+
+################	PART B	   ############# 
+
+interrupt driven UART read
+
+setup in HLD...
+	-set external interrupt in UART Advanced under UART module settings
+	-interrupt when data is in the buffe
+	-associate interrupt with UART (drag and drop)
+
+Pass data from UART via global vars
+
+
+#################	PART C ######################
+
+Wall-clock (hh:mm:SS)
+	-implement using timer interrupt
+
+Timer
+-configure clock in HLD
+-set clock settings
+-associate terminal count (tc) with an ISR
+
+prompt user for start time
+allow user to change clock at anytime
+
+(STUDY HOW COUNTERS/ TIMERS WORK!!)
+
+
+
+################	PART D ####################
+
+measuring elapsed time between events:
+-measure time it takes to run matrix multiplication code
+-resolution of less than 1ms
+
+HINT:
+e1 = counter();
+matrixMult();
+e2 = counter();
+
+p: timer period
+f: clock freq
+
+timer will expire multiple times during execution of fucntion so you need to utilize the terminal count
+
+(counter2 - counter1)*(1/f);
+
+EXTRA CREDIT:
+randomNumber generator on PSoC
