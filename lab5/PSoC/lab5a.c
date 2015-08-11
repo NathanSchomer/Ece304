@@ -150,7 +150,8 @@ int main(){
     
     CyGlobalIntDisable;
     UART_1_UartPutString("Established connection to terminal. \n \r"); 
-    Uart_Int_Start();
+    UART_1_UartPutString("Combination Lock \n \r");
+	Uart_Int_Start();
     Uart_Int_SetVector(uartISR);
     CyGlobalIntEnable;
     
@@ -158,7 +159,19 @@ int main(){
     char input;
         
     for(;;){
-        
+		if(permLock == 1){}
+		else if(permLock == 0 && attemps >= 3){
+			permLock = 1;
+			UART_1_UartPutString("\n\rToo Many Attempts!\n\rPerm Lock Set \n \r");
+		}
+		else if(attempts < 3 && getCombination()){
+			unlocked = 1;
+			UART_1_UartPutString("ACCESS GRANTED \n \r");
+		}
+		else if(attempts < 3){
+			attempts++;
+			UART_1_UartPutString("ACCESS DENIED \n \r");
+		}
     }
 }
 
