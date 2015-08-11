@@ -65,7 +65,7 @@ main()
 		{
 			if(getchar() == 'c'){
 				printf("New 5-digit combination: ");
-				comb = "12345";
+				comb = "12345"; //modify value of comb here
 				//getchar();
 				//getline(comb, 6, stdin);
 				printf("SYSTEM LOCKED!\n");
