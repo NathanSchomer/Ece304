@@ -36,10 +36,9 @@ CY_ISR(timerISR){
     
     tc_count++;
     
-    if(tc_count >= 250 && blinkLed == 1)
+    if(tc_count%250 == 0 && blinkLed == 1)
     {
         Pin_RED_Write(!(Pin_RED_Read()));
-        tc_count = 0;
     }
     else
     {
@@ -162,15 +161,25 @@ int getCombination()
 	//char key1 = comb[0];
 	int currentState = -1;
 	int input;
+    int begin = 0;
 	for(;;){
 		//get button pushed by user via UART
 		input = GetChar();
-		while(input == '\r')
+		while(input == '\r'){
 			input = UART_1_UartGetChar();
+        }
 			
-		if(input == (comb/10000)%10+'0'){
-			if(currentState == -1)
+        if(currentState >= 1 && (tc_count-begin)/500 >= 5)
+        {
+            UART_1_UartPutString("\n\rPassword timeout.\n\r");
+            tc_count = 0;
+            return 0;
+        }
+		else if(input == (comb/10000)%10+'0'){
+			if(currentState == -1){
+                begin = tc_count;
 				currentState = 1;
+            }
 			else
 				return 0;
 		}
